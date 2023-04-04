@@ -1,7 +1,4 @@
-<?php
-require_once('connect.php');
-require_once('pac.php');
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,6 +60,11 @@ require_once('pac.php');
 
             <div class="f2pl">
                 <input type="text" id="nom" name="nom" placeholder="NOM *" autocomplete="nom">
+                <?php
+                    if(!isset($errors['name'])){
+
+                    }
+                ?>
 
                 <input type="text" id="prenom" name="prenom" placeholder="PRENOM *" autocomplete="prenom">
             </div>
