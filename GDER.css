@@ -21,7 +21,58 @@
 .title p {
     color: #5F5F5F;
 }
+/*erreur*/
+#error2, #error1, #error3 {
+    color: red;
+    font-size: 14px;
+    font-weight: normal;
+    background-color: black;
+    border-radius: 5px;
 
+}
+
+#error2 {
+    margin-left: 20%;
+}
+
+#error3 {
+    margin-top: 10px;
+}
+
+/* REDIRECT */
+#redirect {
+    margin: auto;
+    width: 300px;
+    max-height: 250px;
+    background-color: #f3f0f0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 8px #888888;
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 5%;
+    text-align: center;
+}
+
+#redirect button {
+    margin-top: 15%;
+    color: white;
+}
+
+#redirect button:hover {
+    cursor:pointer;
+    background-color: #58a27b;
+}
+
+#redirect img {
+    width: 250px;
+    margin: auto;
+    margin-top: -100px;
+}
+
+#redirect p {
+    margin-top: -70px;
+}
 /*NAV*/
 nav {
     height: 100px;
@@ -65,11 +116,11 @@ header {
 }
 
 #left-header h1, #left-header p, #left-header button {
-   color: white;
+    color: white;
     text-align: center;
 }
 
-#left-header, #illustration, #right-header {
+#left-header, #illustration, .right-header {
     margin-top: 145px;
     width: 50%;
     display: flex;
@@ -84,7 +135,7 @@ header {
     margin-top: 25px;
 }
 
-#left-header button, #hbutton {
+#left-header button, #hbutton, #redirect button {
     padding-top: 11px;
     padding-bottom: 11px;
     padding-left: 25px;
@@ -96,6 +147,10 @@ header {
     border: none;
 }
 
+#redirect button {
+    font-size: 18px;
+}
+
 #left-header button:hover {
     background-color: #58a27b;
     cursor: pointer;
@@ -105,12 +160,11 @@ header {
     margin-top: 145px;
 }
 
-#right-header p{
+.right-header p{
     color: white;
     font-size: 20px;
     font-weight: BOLD;
 }
-
 
 /* FORM */
 .f2pl {
@@ -141,10 +195,6 @@ header {
 
 .fl input, .fl select, .f2pl input {
     padding: 15px;
-    /*padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;*/
 }
 
 form input, form select {
@@ -457,8 +507,12 @@ form {
     .f2pl input:first-child{
         margin-right: 15px;
     }
-    #right-header p{
+    .right-header p{
         margin-left: 30px;
+    }
+    #error1, #error2, #error3 {
+        margin-left: 5px;
+        margin-right: 0px;
     }
     #container-form {
         margin-right: 20px;
@@ -486,10 +540,16 @@ form {
     #illustration img {
         width: 250px;
     }
-    #right-header p{
+    .right-header p{
         margin-left: 40px;
         margin-right: 40px;
     }
+
+    #error1, #error2, #error3 {
+        margin-left: 5px;
+        margin-right: 0px;
+    }
+
     nav p {
         font-size: 14px;
     }
@@ -548,20 +608,20 @@ form {
     #grey {
         display: none;
     }
-     #illustration, #container-form {
-         margin: auto;
-         margin-top: 0px;
-         margin-bottom: 0px;
-         width: 85%;
-     }
+    #illustration, #container-form {
+        margin: auto;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 85%;
+    }
 
-     #illustration {
-         padding: 0px;
-     }
+    #illustration {
+        padding: 0px;
+    }
     nav p {
         font-size: 12px;
     }
-    #left-header, #right-header {
+    #left-header, .right-header {
         margin-top: 75px;
     }
     #transition-energetique, #accompagnement, #services{
@@ -580,11 +640,11 @@ form {
         padding-bottom: 75px;
     }
 
-    #right-header {
+    .right-header {
         margin-top: 35px;
     }
 
-    #right-header, #left-header {
+    .right-header, #left-header {
         width: 75%;
     }
 
@@ -628,13 +688,13 @@ form {
     #form .title p {
         font-size: 14px;
     }
-    #right-header {
+    .right-header {
         text-align: center;
     }
     #le-buttun-perdu {
         justify-content: center;
     }
-    #right-header form{
+    .right-header form{
         margin: auto;
     }
     .title h2 {

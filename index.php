@@ -1,4 +1,57 @@
+<?php
+try {
+    $dbh = new PDO('mysql:host=localhost:3306;dbname=root2;charset=utf8', 'root2', 'root');
+} catch (Exception $e) {
+    die('Erreur de connexion' . $e->getMessage());
+}
 
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    //Codition email
+    if (!preg_match("~^.+@.+\..+$~", $_POST['email'])) {
+        $errors['preg_email'] = "l'e-mail est non conforme";
+    }
+
+    //Code postal
+    if (!preg_match("~^\d{5}$~", $_POST['code_postal'])) {
+        $errors['lenght_code_postal'] = "Le code postal n'est pas conforme";
+    }
+
+    //Code postal
+    if (!preg_match("~^\d{10}$~", $_POST['telephone'])) {
+        $errors['lenght_telephone'] = "Le numéro de téléphone n'est pas conforme";
+    }
+
+    if (empty($errors)){
+
+        try {
+
+            $query_params = array(
+                ':nom' => $_POST['nom'],
+                ':prenom' => $_POST['prenom'],
+                ':nom_entreprise' => $_POST['nom_entreprise'],
+                ':code_postal' => $_POST['code_postal'],
+                ':telephone' => $_POST['telephone'],
+                ':email' => $_POST['email'],
+                ':service' => $_POST['service']
+            );
+
+            $query = $dbh->prepare('INSERT INTO gderps (nom, prenom, nom_entreprise, code_postal, telephone, email, service) VALUES(:nom, :prenom, :nom_entreprise, :code_postal, :telephone, :email, :service)');
+            $query->execute($query_params);
+            header('Location: redirectory.html');
+            exit;
+
+        } catch (PDOException $e) {
+            echo "Erreur: " . $e->getMessage() . "<br>";
+            return false;
+        }
+    }
+}
+
+//exit;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,10 +98,8 @@
         </a>
     </div>
 
-    <div id="right-header">
-        <p>Obtenez vos panneaux solaires via le formulaire </p>
-
-        <form method="POST" action="contact.php">
+    <div class="right-header">
+        <form method="POST" action="index.php">
             <div class="fl">
                 <select id="status" name="service">
                     <option value="">SERVICE ... <sup>*</sup></option>
@@ -59,12 +110,7 @@
             </div>
 
             <div class="f2pl">
-                <input type="text" id="nom" name="nom" placeholder="NOM *" autocomplete="nom">
-                <?php
-                    if(!isset($errors['name'])){
-
-                    }
-                ?>
+                <input type="text" id="nom" name="nom" placeholder="NOM *" autocomplete="nom" required>
 
                 <input type="text" id="prenom" name="prenom" placeholder="PRENOM *" autocomplete="prenom">
             </div>
@@ -74,14 +120,30 @@
             </div>
 
             <div class="f2pl">
-                <input type="text" id="code_postal" name="code_postal" placeholder="CODE POSTAL" autocomplete="code_postal">
+                <input type="text" id="code_postal" name="code_postal" placeholder="CODE POSTAL" autocomplete="code_postal" required>
 
-                <input type="text" id="telephone" name="telephone" placeholder="TELEPHONE *">
+                <input type="text" id="telephone" name="telephone" placeholder="TELEPHONE *" required>
             </div>
+
+            <div class="f2pl">
+                <?php if (isset($errors['lenght_code_postal'])) { ?>
+                    <p id="error1"><?php echo $errors['lenght_code_postal']; ?></p>
+                <?php } ?>
+
+                <?php if (isset($errors['lenght_telephone'])) { ?>
+                    <p id="error2"><?php echo $errors['lenght_telephone']; ?></p>
+                <?php } ?>
+            </div>
+
 
             <div class="fl">
                 <label for="email"></label>
-                <input type="text" id="email" name="email" placeholder="E-MAIL *" autocomplete="email">
+                <input type="text" id="email" name="email" placeholder="E-MAIL *" autocomplete="email" required>
+
+                <?php if (isset($errors['preg_email'])) { ?>
+                    <p id="error3"><?php echo $errors['preg_email']; ?></p>
+                <?php } ?>
+
             </div>
             <div id="le-buttun-perdu">
                 <input type="submit" value="ENVOYER" id="hbutton">
@@ -137,7 +199,7 @@
             <div>
                 <img src="img/administrator.png" alt="icone d'un employé d'administration devant son ordinateur">
                 <h3>Support administratif</h3>
-                <p>GDER se charge de toutes les démarches administratives  de manière professionnelle et efficace nécessaires. </p>
+                <p>GDER se charge de toutes les démarches administratives de manière professionnelle et efficace nécessaires. </p>
             </div>
         </div>
 
@@ -145,7 +207,7 @@
             <div>
                 <img src="img/solar-panel.png" alt="icon d'un panneau solaire">
                 <h3>Travaux et chantier</h3>
-                <p>Un expert de notre équipe est contacté  pour vous fournir un devis gratuit. Il vous prodiguera des conseils personnalisés pour votre projet.</p>
+                <p>Un expert de notre équipe est contacté pour vous fournir un devis gratuit. Il vous prodiguera des conseils personnalisés pour votre projet.</p>
             </div>
         </div>
 
@@ -228,7 +290,7 @@
         <div id="grey"></div>
 
         <div id="container-form">
-            <form method="POST" action="contact.php">
+            <form method="POST" action="index.php">
                 <div class="fl">
                     <select id="status" name="service">
                         <option value="">SERVICE ... <sup>*</sup></option>

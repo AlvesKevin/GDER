@@ -6,8 +6,6 @@ try {
     die('Erreur de connexion' . $e->getMessage());
 }
 
-echo "pas d'erreur";
-
 /*$insertUser = $dbh->prepare('INSERT INTO people(name, first_name, address, postal_code, town, email, password,group_id)VALUES(?, ?, ?, ?, ?, ?, PASSWORD(?), ?)');
 $insertUser->execute(array($name, $first_name, $address, $postal_code, $town, $email, $password, $group_id));*/
 
@@ -20,31 +18,41 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    //Codition Name
-    if (empty($_POST['name'])) {
-        $errors['name'] = 'Le champ "Nom" est obligatoire';
+    //Codition email
+    if (mb_strlen($_POST['email']) > 255) {
+        $errors['lenght_email'] = "La chaîne de caractère est trop longue";
     }
-} else {
 
-    try {
-        $query_params = array(
-            ':nom' => $_POST['nom'],
-            ':prenom' => $_POST['prenom'],
-            ':nom_entreprise' => $_POST['nom_entreprise'],
-            ':code_postal' => $_POST['code_postal'],
-            ':telephone' => $_POST['telephone'],
-            ':email' => $_POST['email'],
-            ':service' => $_POST['service']
-        );
+    if (!preg_match("~^.+@.+\..+$~", $_POST['email'])) {
+        $errors['preg_email'] = "l'e-mail est non conforme";
+        echo " mauvais email";
+        /*header('Location: index.php');
+        exit;*/
+    }
 
-        $query = $dbh->prepare('INSERT INTO gderps (nom, prenom, nom_entreprise, code_postal, telephone, email, service) VALUES(:nom, :prenom, :nom_entreprise, :code_postal, :telephone, :email, :service)');
-        $query->execute($query_params);
-        header('Location: index.php');
-        exit;
+    if (empty($errors)){
 
-    } catch (PDOException $e) {
-        echo "Erreur: " . $e->getMessage() . "<br>";
-        return false;
+        try {
+
+            $query_params = array(
+                ':nom' => $_POST['nom'],
+                ':prenom' => $_POST['prenom'],
+                ':nom_entreprise' => $_POST['nom_entreprise'],
+                ':code_postal' => $_POST['code_postal'],
+                ':telephone' => $_POST['telephone'],
+                ':email' => $_POST['email'],
+                ':service' => $_POST['service']
+            );
+
+            $query = $dbh->prepare('INSERT INTO gderps (nom, prenom, nom_entreprise, code_postal, telephone, email, service) VALUES(:nom, :prenom, :nom_entreprise, :code_postal, :telephone, :email, :service)');
+            $query->execute($query_params);
+            header('Location: redirectory.html');
+            exit;
+
+        } catch (PDOException $e) {
+            echo "Erreur: " . $e->getMessage() . "<br>";
+            return false;
+        }
     }
 }
 
